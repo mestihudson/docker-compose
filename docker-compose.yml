@@ -17,7 +17,7 @@ services:
     - ./:/ws
     image: node:8.16.0-alpine
     working_dir: /ws/api
-    entrypoint: /bin/sh -c 'npm install && && npm start; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && npm start; tail -f /ws/docker-compose.yml'
     environment:
     - HOST=0.0.0.0
     - PORT=4000
@@ -39,6 +39,7 @@ services:
     - VUE_APP_API=http://172.21.2.2:4000
     ports:
     - 4200:4200
+    - 4300:4300
     entrypoint: /bin/sh -c 'npm install && yarn serve; tail -f /ws/docker-compose.yml'
 
   acceptance:
@@ -50,9 +51,13 @@ services:
     - ./:/ws
     image: node:8.16.0-alpine
     working_dir: /ws/acceptance
-    entrypoint: /bin/sh -c 'npm install; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && npm test; tail -f /ws/docker-compose.yml'
     environment:
     - APP_URL=http://172.21.2.3:4200
+    depends_on:
+    - api
+    - frontend
+    - hub
 
   hub:
     container_name: hub
