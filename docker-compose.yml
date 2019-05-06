@@ -1,8 +1,7 @@
-version: '3.3'
+version: '3.4'
 
 networks:
   docker-compose:
-    name: docker-compose
     ipam:
       config:
       - subnet: 172.21.2.0/24
@@ -23,6 +22,13 @@ services:
     - PORT=4000
     ports:
     - 4000:4000
+    healthcheck:
+      test: >-
+        /bin/bash -c
+        "echo -e \"GET / HTTP/1.1\n\n\" > /dev/tcp/localhost/4000 || exit 1"
+      interval: 10s
+      timeout: 1m30s
+      retries: 5
 
   frontend:
     container_name: frontend
@@ -51,7 +57,7 @@ services:
     - ./:/ws
     image: node:8.16.0-alpine
     working_dir: /ws/acceptance
-    entrypoint: /bin/sh -c 'npm install && npm test; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && /ws/acceptance.entrypoint.sh && npm test; tail -f /ws/docker-compose.yml'
     environment:
     - APP_URL=http://172.21.2.3:4200
     depends_on:
