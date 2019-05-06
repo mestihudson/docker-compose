@@ -46,7 +46,7 @@ services:
     ports:
     - 4200:4200
     - 4300:4300
-    entrypoint: /bin/sh -c 'npm install && yarn serve; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && yarn pre-dist && yarn serve; tail -f /ws/docker-compose.yml'
 
   acceptance:
     container_name: acceptance
@@ -57,7 +57,7 @@ services:
     - ./:/ws
     image: node:8.16.0-alpine
     working_dir: /ws/acceptance
-    entrypoint: /bin/sh -c 'npm install && /ws/acceptance.entrypoint.sh && npm test; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && /ws/acceptance.entrypoint.sh && npm test && touch cucumber.ok; tail -f /ws/docker-compose.yml'
     environment:
     - APP_URL=http://172.21.2.3:4200
     depends_on:
