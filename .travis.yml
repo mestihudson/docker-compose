@@ -4,5 +4,5 @@ node_js:
 - '8.16'
 
 script:
-- docker-compose up
+- docker-compose up -d
 - bash ./verify.sh
