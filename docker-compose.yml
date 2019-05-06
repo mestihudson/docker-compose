@@ -57,7 +57,7 @@ services:
     - ./:/ws
     image: node:8.16.0-alpine
     working_dir: /ws/acceptance
-    entrypoint: /bin/sh -c 'npm install && /ws/acceptance.entrypoint.sh && npm test && touch cucumber.ok; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && /ws/acceptance.entrypoint.sh && npm test && touch /ws/cucumber.ok; tail -f /ws/docker-compose.yml'
     environment:
     - APP_URL=http://172.21.2.3:4200
     depends_on:
