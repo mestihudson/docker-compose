@@ -1,2 +1,10 @@
+language: node_js
+
+node_js:
+- '8.16'
+
 before_install:
  - docker-compose up -d
+
+script:
+- bash: ./verify.sh
