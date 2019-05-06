@@ -1,5 +1,7 @@
 #!/bin/sh
 
+docker-compose up -d
+
 while true; do
   test -e cucumber.ok && break || echo -e '.'
 done
